@@ -1,12 +1,12 @@
 # Web socket architecture terraform example made by TungNT
 
-    This is my first arhitecture that its usecase is for Websocket API gateway messaging serverless app.
+This is my first arhitecture that its usecase is for Websocket API gateway messaging serverless app.
 
 ## Architecture Diagram
 
 ![alt text](./app.png)
 
-    First, you'll create Lambda functions that will handle API requests, as well as a DynamoDB table that stores your client IDs. Then, you'll use the API Gateway console to create a WebSocket API that integrates with your Lambda functions. Lastly, you'll test your API to verify that messages are sent and received.
+First, you'll create Lambda functions that will handle API requests, as well as a DynamoDB table that stores your client IDs. Then, you'll use the API Gateway console to create a WebSocket API that integrates with your Lambda functions. Lastly, you'll test your API to verify that messages are sent and received.
 
 ## Use case
 
