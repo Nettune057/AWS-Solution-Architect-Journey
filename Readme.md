@@ -12,10 +12,13 @@ First, you'll create Lambda functions that will handle API requests, as well as 
 
 Have a Websocket API gateway to route message traffic to functions that serves different purposes
 
-## Progress
+## Progresses
 
 ### 14/7/2023
 Researched about the architecture and created Terraform remote backend, Websocket API gateway.
+
+### 17/7/2023
+Modulized all components, created Websocket API gateway, DynamoDB, Uploaded script to 4 Lambda functions.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
