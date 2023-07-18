@@ -1,42 +1,55 @@
+
 module "iam" {
   source = "./modules/iam"
 }
 module "lambda_function_ConnectHandler" {
-  role             = module.iam.aws_lambda_function
+  table              = module.iam.aws_dynamodb_table_id
+  role               = module.iam.lambda_connection_iam_role
   source             = "./modules/lambda"
   function_name      = "ConnectHandler"
-  function_handler   = "ConnectHandler.handler"
+  function_handler   = "index.handler"
   function_runtime   = "nodejs14.x"
-  function_code_path = "./lambda_file/ConnectHandler.js"
+  function_code_path = "./lambda_file/ConnectHandler/index.js"
+  function_out_path  = "./lambda_file/ConnectHandler/index.zip"
+  dependency         = [module.iam.lambda_connection_iam_role,
+                        module.iam.lambda_connection_iam_policy]
 }
 
 module "lambda_function_DefaultHandler" {
-  role             = module.iam.aws_lambda_function
+  table              = module.iam.aws_dynamodb_table_id
+  role               = module.iam.lambda_default_handler_iam_role
   source             = "./modules/lambda"
   function_name      = "DefaultHandler"
-  function_handler   = "DefaultHandler.handler"
+  function_handler   = "index.handler"
   function_runtime   = "nodejs14.x"
-  function_code_path = "./lambda_file/DefaultHandler.js"
+  function_code_path = "./lambda_file/Default/index.js"
+  function_out_path  = "./lambda_file/Default/index.zip"
+  dependency         = [module.iam.lambda_default_handler_iam_role,
+                        module.iam.lambda_default_handler_iam_policy]
 }
 
 module "lambda_function_DisconnectHandler" {
-  role               = module.iam.aws_lambda_function
+  table              = module.iam.aws_dynamodb_table_id
+  role               = module.iam.lambda_disconnect_handler_iam_role
   source             = "./modules/lambda"
   function_name      = "DisconnectHandler"
-  function_handler   = "DisconnectHandler.handler"
+  function_handler   = "index.handler"
   function_runtime   = "nodejs14.x"
-  function_code_path = "./lambda_file/DisconnectHandler.js"
+  function_code_path = "./lambda_file/Disconnect/index.js"
+  function_out_path  = "./lambda_file/Disconnect/index.zip"
+  dependency         = [module.iam.lambda_disconnect_handler_iam_role,
+                        module.iam.lambda_disconnect_handler_iam_policy]
 }
 
 module "lambda_function_SendMessageHandler" {
-  role             = module.iam.aws_lambda_function
+  table              = module.iam.aws_dynamodb_table_id
+  role               = module.iam.lambda_message_handler_iam_role
   source             = "./modules/lambda"
   function_name      = "SendMessageHandler"
-  function_handler   = "SendMessageHandler.handler"
+  function_handler   = "index.handler"
   function_runtime   = "nodejs14.x"
-  function_code_path = "./lambda_file/SendMessageHandler.js"
-}
-
-module "dynamodb" {
-  source = "./modules/dynamoDB"
+  function_code_path = "./lambda_file/SendMess/index.js"
+  function_out_path  = "./lambda_file/SendMess/index.zip"
+  dependency         = [module.iam.lambda_message_handler_iam_role,
+                        module.iam.lambda_message_handler_iam_policy]
 }
