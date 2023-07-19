@@ -20,5 +20,8 @@ Researched about the architecture and created Terraform remote backend, Websocke
 ### 17/7/2023
 Modulized all components, created Websocket API gateway, DynamoDB, Uploaded script to 4 Lambda functions.
 
+### 18/7/2023
+Creates Websocket API Gateway, itegrations, test connection
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
