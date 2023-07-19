@@ -12,7 +12,7 @@ variable "billing_mode" {
 
 variable "hash_key" {
     description = "hash key of dynamodb"
-    default = "UserId"
+    default = "connectionId"
     type = string
 }
 

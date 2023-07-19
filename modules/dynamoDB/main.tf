@@ -3,7 +3,7 @@ resource "aws_dynamodb_table" "ws_messenger_dynamodb" {
   billing_mode = var.billing_mode
   hash_key     = var.hash_key
   attribute {
-    name = "UserId"
+    name = "connectionId"
     type = "S"
   }
 
