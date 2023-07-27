@@ -1,4 +1,4 @@
-# SAM Serverless architecture
+# SAM Serverless architecture made by Nettune057
 
 This is the SAM example for Rest API - Cognito - Lambda - DynamoDB
 
