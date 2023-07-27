@@ -2,6 +2,8 @@
 
 This is the SAM example for Rest API - Cognito - Lambda - DynamoDB
 
+## Architecture Diagram
+
 ![alt text](./simple.png)
 
 ## Progresses
