@@ -1,0 +1,6 @@
+node_modules
+.vscode/
+samconfig.toml
+package.json
+env.json
+buildspec.yml

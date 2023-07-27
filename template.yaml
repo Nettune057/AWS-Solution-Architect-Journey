@@ -1,0 +1,133 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  sam-app-multi-method
+Transform:
+- AWS::Serverless-2016-10-31
+
+
+Parameters:
+  TableName:
+    Type: String
+    Default: 'http-crud-tutorial-items'
+  CognitoUserEmail:
+
+    Description: Email address of the created user
+    Type: String
+  APIStageName:
+    Default: api
+    Description: StageName of API Gateway deployment
+    Type: String
+
+Globals:
+  Function:
+    Handler: index.handler
+    Runtime: nodejs18.x
+    Architectures:
+      - x86_64
+    MemorySize: 128
+    Timeout: 100
+    Environment:
+        Variables:         
+          TableName: !Ref SampleTable
+
+
+Resources:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: 'jwt'
+      UsernameAttributes:
+        - email
+      Policies: 
+        PasswordPolicy:
+          MinimumLength: 8
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
+  
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  UserPoolUser:
+    Type: AWS::Cognito::UserPoolUser
+    Properties:
+      DesiredDeliveryMediums:
+        - EMAIL
+      Username: !Ref CognitoUserEmail
+      UserPoolId: !Ref UserPool
+
+
+  AppApi:
+    DependsOn: UserPool
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: 'sam-app'
+      StageName: !Ref APIStageName
+      Auth:
+        Authorizers:
+            CognitoAuthorizer:
+              UserPoolArn: !GetAtt "UserPool.Arn"
+
+  
+  getAllItemsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/handlers/example
+      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: "Allow"
+              Action:
+              - "dynamodb:DeleteItem"
+              - "dynamodb:GetItem"
+              - "dynamodb:PutItem"
+              - "dynamodb:Scan"
+              - "dynamodb:UpdateItem"
+              Resource: !GetAtt SampleTable.Arn
+      Events:
+        GetAllItems:
+          Type: Api
+          Properties:
+            Auth:
+              Authorizer: CognitoAuthorizer
+            RestApiId: !Ref AppApi
+            Path: /items
+            Method: GET
+        DeleteItem:
+          Type: Api
+          Properties:
+            RestApiId: !Ref AppApi
+            Path: /items/{id}
+            Method: DELETE
+        PutItem:
+          Type: Api
+          Properties:
+            RestApiId: !Ref AppApi
+            Path: /items
+            Method: PUT
+
+
+  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
+  SampleTable:
+    Type: AWS::Serverless::SimpleTable
+    
+    Properties:
+      TableName: "http-crud-tutorial-items"
+      PrimaryKey:
+        Name: id
+        Type: String
+
+
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/"
