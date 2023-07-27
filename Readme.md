@@ -1,4 +1,4 @@
-# Web socket architecture terraform example made by TungNT
+# Web socket architecture terraform example made by Nettune057
 
 This is my first arhitecture that its usecase is for Websocket API gateway messaging serverless app.
 
