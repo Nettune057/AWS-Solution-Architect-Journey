@@ -11,3 +11,7 @@ This is a terraform project to provision a complete ECS Fargate cluter serve ano
 ### 28/7/2023
 
 Complete all network components.
+
+### 1/8/2023
+
+Complete everything, ready to be provisioned
