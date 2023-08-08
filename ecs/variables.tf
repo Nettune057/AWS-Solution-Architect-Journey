@@ -40,3 +40,4 @@ variable "platform_version" {}
 variable "assign_public_ip" {
     type = bool
 }
+variable "image" {}

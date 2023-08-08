@@ -1,5 +1,5 @@
 variable "setup_name" {
-    default = "ECS"
+    default = "ecs"
 }
 variable "env" {
     default = "dev"
@@ -98,7 +98,9 @@ variable "ecs_cluster_name" {
     default = "ECS"
 }
 
-
+variable "default_branch" {
+    default = "master"
+}
 
 variable "policy_name" {
     default = "ECSPolicy"
@@ -196,3 +198,79 @@ variable "assign_public_ip" {
     default = false
 }
 
+variable "ecr_name" {
+    default = "ecr"
+}
+
+variable "image_tag_mutability" {
+    default = "MUTABLE"
+}
+
+variable "force_delete" {
+    type    = bool
+    default = true
+}
+
+variable "scan_on_push" {
+    type    = bool
+    default = true
+}
+
+variable "repository_name" {
+    default = "repository"
+}
+
+variable "versioning_status" {
+    default = "Disabled"
+}
+
+variable "bucket_name" {
+    default = "projectecs123"
+}
+
+variable "cloudwatch_log_group_name" {
+    default = "cicd-log"
+}
+
+variable "cloudwatch_log_stream_name" {
+    default = "cicd-stream"
+}
+variable "codebuild_name" {
+    default = "codebuild"
+}
+
+variable "build_timeout" {
+    default = 5
+}
+
+variable "queued_timeout" {
+    default = 5
+}
+
+variable "codeBuildBasePolicy" {
+    default = "codeBuildBasePolicy-ecs-dev"
+}
+
+variable "codeBuildServiceRolePolicy" {
+    default = "codeBuildServiceRolePolicy-ecs-dev"
+}
+
+variable "codeBuildBatchPolicy" {
+    default = "codeBuildBatchPolicy-ecs-dev"
+}
+
+variable "codebuild_role" {
+    default = "codeBuildServiceRole"
+}
+
+variable "codepipeline_role" {
+    default = "codePipelineServiceRole"
+}
+
+variable "inline_policy" {
+    default = "inline_policy"
+}
+
+variable "codepipeline_name" {
+    default = "codepipeline"
+}

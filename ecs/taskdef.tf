@@ -13,8 +13,8 @@ resource "aws_ecs_task_definition" "main" {
     }
     container_definitions           = jsonencode([
         {
-            name                    = "ECS-dev-container"
-            image                   = "400516100932.dkr.ecr.us-east-2.amazonaws.com/aws-ecs-docker:latest"
+            name                    = "${var.container_name}"
+            image                   = "${var.image}"
             cpu                     = 256
             memory                  = 256
 

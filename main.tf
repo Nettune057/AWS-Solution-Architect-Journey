@@ -75,4 +75,46 @@ module "ecs" {
     container_port              = var.container_port
     platform_version            = var.platform_version
     assign_public_ip            = var.assign_public_ip
+    image                       = module.ecr.ecr_repository_url
+}
+
+module "ecr" {
+    source                      = "./ecr"
+    name                        = "${local.prefix_name}-${var.ecr_name}"
+    image_tag_mutability        = var.image_tag_mutability
+    force_delete                = var.force_delete
+    scan_on_push                = var.scan_on_push
+}
+
+module "cicd" {
+    source                      = "./cicd"
+    repository_name             = "${local.prefix_name}-${var.repository_name}"
+    default_branch              = var.default_branch
+    codebuild_name              = "${local.prefix_name}-${var.codebuild_name}"
+    build_timeout               = var.build_timeout
+    queued_timeout              = var.queued_timeout
+    bucket_location             = module.s3.s3_name
+    cloudwatch_log_group_name   = module.monitoring.cloudwatch_log_group_name
+    cloudwatch_log_stream_name  = module.monitoring.cloudwatch_log_stream_name
+    s3_cicd_arn                 = module.s3.s3_arn
+    log_group                   = module.monitoring.cloudwatch_log_group_arn
+    codeBuildBasePolicy         = var.codeBuildBasePolicy
+    codeBuildServiceRolePolicy  = var.codeBuildServiceRolePolicy
+    codeBuildBatchPolicy        = var.codeBuildBatchPolicy
+    codebuild_role              = "${local.prefix_name}-${var.codebuild_role}"
+    codepipeline_name           = "${local.prefix_name}-${var.codepipeline_name}"
+    codepipeline_role           = "${local.prefix_name}-${var.codepipeline_role}"
+    inline_policy               = "${local.prefix_name}-${var.inline_policy}"
+}
+module "s3" {
+    source                      = "./s3"
+    bucket_name                 = "${local.prefix_name}-${var.bucket_name}"
+    versioning_status           = var.versioning_status
+    bucket_name_cicd            = "${local.prefix_name}-${var.bucket_name}-cicd"
+    versioning_status_cicd      = var.versioning_status
+}
+module "monitoring" {
+    source                      = "./monitoring"
+    cloudwatch_log_group_name   = "${local.prefix_name}-${var.cloudwatch_log_group_name}"
+    cloudwatch_log_stream_name  = "${local.prefix_name}-${var.cloudwatch_log_stream_name}"
 }

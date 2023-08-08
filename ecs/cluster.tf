@@ -5,7 +5,7 @@ resource "aws_ecs_cluster" "name" {
 resource "aws_ecs_capacity_provider" "name" {
     name                            = var.capacity_provider_name
     auto_scaling_group_provider {
-        auto_scaling_group_arn      = aws_autoscaling_group.failure_analysis_ecs_asg.arn
+        auto_scaling_group_arn      = aws_autoscaling_group.main.arn
         managed_scaling {
             target_capacity = 100
         }
@@ -20,7 +20,7 @@ resource "aws_launch_configuration" "ecs_launch_config" {
     instance_type                   = var.instance_type
 }
 
-resource "aws_autoscaling_group" "failure_analysis_ecs_asg" {
+resource "aws_autoscaling_group" "main" {
     name                            = var.asg_name
     vpc_zone_identifier             = var.vpc_zone
     launch_configuration            = aws_launch_configuration.ecs_launch_config.name
